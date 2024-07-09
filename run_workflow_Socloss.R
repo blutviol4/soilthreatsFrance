@@ -101,9 +101,12 @@ source(file = "/home/nsaby/ejp/Rcodev2/ISRICStepsDSM.R")
 ## 4  SOC futur dyn -----------
 
 # covariate
-# change to dyn covariate
+# change to dyn covariate-ssp1
 
-list_of_files <- list.files("~/covariates/socloss/dynfutur//",
+mainDir <- "E:/SERENA/WP5_bundles/France/ISRIC_threats_France/Output_SOC_France/socless45yrsoc/ssp1"
+if ( !  file.exists(mainDir))  dir.create(mainDir) 
+
+list_of_files <- list.files("~/covariates/socloss/dynfutur/ssp1/",
                             full.names = TRUE)
 lapply(list_of_files, function(i) {
   file.copy(from = i, to = paste0("~/covariates/socloss/covdsm/", basename(i)) ,
@@ -115,19 +118,47 @@ need2fit = FALSE
 prediction = TRUE
 source(file = "/home/nsaby/ejp/Rcodev2/predictISRIC.R")
 
-##  5 sum actual stable carbone and future projection of C ----------
+# change to dyn covariate-ssp5
+mainDir <- "E:/SERENA/WP5_bundles/France/ISRIC_threats_France/Output_SOC_France/socless45yrsoc/ssp5"
+if ( !  file.exists(mainDir))  dir.create(mainDir)
+
+list_of_files <- list.files("~/covariates/socloss/dynfutur/ssp5/",
+                            full.names = TRUE)
+lapply(list_of_files, function(i) {
+  file.copy(from = i, to = paste0("~/covariates/socloss/covdsm/", basename(i)) ,
+            overwrite = TRUE
+            )
+})
+
+need2fit = FALSE
+prediction = TRUE
+source(file = "/home/nsaby/ejp/Rcodev2/predictISRIC.R")
+
+
+##  5 sum actual stable carbone and future projection 
 
 stable = rast("outputsocloss/socgreater45yrsoc/maps/socgreater45yrsoc/rangerquantreg_0-20_notransform_dorfe_tune/socgreater45yrsoc_Q0.5_0-20cm.tif")
-futurdyn = rast("outputsocloss/socless45yrsoc/maps/socless45yrsoc/rangerquantreg_0-20_notransform_dorfe_tune/socless45yrsoc_Q0.5_0-20cm.tif")
 
-soc2050 = stable / 10  + futurdyn / 10 
-plot(soc2050)
+##sum actual stable carbone and future projection ssp1
+futurdyn_ssp1 = rast("outputsocloss/socless45yrsoc/ssp1/maps/socless45yrsoc/rangerquantreg_0-20_notransform_dorfe_tune/socless45yrsoc_Q0.5_0-20cm.tif")
 
-writeRaster(soc2050,"~/covariates/socloss/soildsm/socfutur.tif",
+soc2050_ssp1 = stable / 10  + futurdyn_ssp1 / 10 
+plot(soc2050_ssp1)
+
+writeRaster(soc2050_ssp1,"~/covariates/socloss/soildsm/soc2050_ssp1.tif",
             overwrite = T)
 
+##sum actual stable carbone and future projection ssp5
+futurdyn_ssp5 = rast("outputsocloss/socless45yrsoc/ssp5/maps/socless45yrsoc/rangerquantreg_0-20_notransform_dorfe_tune/socless45yrsoc_Q0.5_0-20cm.tif")
+
+soc2050_ssp5 = stable / 10  + futurdyn_ssp5 / 10 
+plot(soc2050_ssp5)
+
 soc = rast("~/covariates/socloss/soildsm/socactual.tif")
-plot( (soc / 10) - soc2050)
+
+plot( (soc / 10) - soc2050_ssp1)
+
+plot( (soc / 10) - soc2050_ssp5)
 
 
 # Map bulk density ---------------
