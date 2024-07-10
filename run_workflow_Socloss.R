@@ -103,9 +103,6 @@ source(file = "/home/nsaby/ejp/Rcodev2/ISRICStepsDSM.R")
 # covariate
 # change to dyn covariate-ssp1
 
-mainDir <- "E:/SERENA/WP5_bundles/France/ISRIC_threats_France/Output_SOC_France/socless45yrsoc/ssp1"
-if ( !  file.exists(mainDir))  dir.create(mainDir) 
-
 list_of_files <- list.files("~/covariates/socloss/dynfutur/ssp1/",
                             full.names = TRUE)
 lapply(list_of_files, function(i) {
@@ -114,14 +111,12 @@ lapply(list_of_files, function(i) {
             )
 })
 
+config$outputDir = "/home/nsaby/ejp/outputsocloss/socless45yrsoc/ssp1"
 need2fit = FALSE
 prediction = TRUE
 source(file = "/home/nsaby/ejp/Rcodev2/predictISRIC.R")
 
 # change to dyn covariate-ssp5
-mainDir <- "E:/SERENA/WP5_bundles/France/ISRIC_threats_France/Output_SOC_France/socless45yrsoc/ssp5"
-if ( !  file.exists(mainDir))  dir.create(mainDir)
-
 list_of_files <- list.files("~/covariates/socloss/dynfutur/ssp5/",
                             full.names = TRUE)
 lapply(list_of_files, function(i) {
@@ -130,6 +125,7 @@ lapply(list_of_files, function(i) {
             )
 })
 
+config$outputDir = "/home/nsaby/ejp/outputsocloss/socless45yrsoc/ssp5"
 need2fit = FALSE
 prediction = TRUE
 source(file = "/home/nsaby/ejp/Rcodev2/predictISRIC.R")
